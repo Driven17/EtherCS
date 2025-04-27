@@ -1,0 +1,81 @@
+table {
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+td {
+    padding: 8px;
+    text-align: center;
+}
+img {
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+.content {
+    padding: 20px;
+}
+nav {
+    background-color: #333;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+nav a {
+    color: white;
+    margin-right: 15px;
+    text-decoration: none;
+}
+nav a:hover {
+    text-decoration: underline;
+}
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+}
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+}
+
+
+/* Navigation bar right, aka dropdown menu for setting & logout */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #444;
+    min-width: 120px;
+    border-radius: 6px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.dropdown-content a {
+    color: white;
+    padding: 10px 12px;
+    display: block;
+    text-decoration: none;
+}
+.dropdown-content a:hover {
+    background-color: #555;
+}
+.user-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+/* Navigation bar left */
+.nav-left {
+    display: flex;
+    gap: 20px;
+}
+.nav-left a {
+    color: white;
+    text-decoration: none;
+}
+
+.nav-left a:hover {
+    text-decoration: underline;
+}

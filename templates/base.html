@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}EtherCS{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="">Marketplace (Q2 2025)</a>
+            <a href="{{ url_for('inventory') }} ">Inventory</a>
+            <a href="{{ url_for('mylistings') }}">My Listings</a>
+        </div>
+
+        <div class="user-dropdown">
+            {% if user %}
+                <img src="{{ user.avatar }}" alt="Avatar" class="avatar">
+                <div class="dropdown-content">
+                <a href="">Settings</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login/Signup</a>
+            {% endif %}
+                </div>
+        </div>
+    </nav>
+    
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+    
+</body>
+</html>

@@ -15,3 +15,8 @@ migrations/__pycache__/
 
 # (Optional) Ignore editor config files
 .vscode/
+
+pastfunctions/
+
+# TEMP
+static/terminal.js
