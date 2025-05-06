@@ -8,7 +8,11 @@
     {% for listing in listings %}
         <img src="{{ listing.icon_url }}" alt="{{ listing.market_name }}" width="120" height="90">
         
+<<<<<<< HEAD
         {{ listing.market_name }}  |  ${{ listing.price }}
+=======
+        <p>{{ listing.market_name }}  |  ${{ listing.price }}</p>
+>>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
 
         <form action="{{ url_for('mylistings_edit') }}" method="post">
             <input type="hidden" name="listing_id" value="{{ listing.listing_id }}">

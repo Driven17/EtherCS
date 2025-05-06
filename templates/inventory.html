@@ -8,6 +8,7 @@
     <tr>
       {% for item in inventory %}
         <td>
+<<<<<<< HEAD
           <img src="{{ item.icon_url }}" alt="{{ item.name }}" width="120" height="90">
           <p>{{ item.market_hash_name }}</p>
           
@@ -16,13 +17,33 @@
               <input type="hidden" name="asset_id" value="{{ item.assetid }}">
               <input type="hidden" name="market_name" value="{{ item.market_hash_name }}">
               <input type="hidden" name ="icon_url" value="{{ item.icon_url }}">
+=======
+          <img src="{{ item.icon_url }}" alt="{{ item.market_name }}" width="120" height="90">
+          <p>{{ item.market_name }}</p>
+          
+          {% if item.tradable == 1 %}
+            <form action="{{ url_for('list_item') }}" method="post">
+
+              <input type="hidden" name="assetid" value="{{ item.assetid }}">
+              <input type="hidden" name="classid" value="{{ item.classid }}">
+              <input type="hidden" name="instanceid" value="{{ item.instanceid }}">
+              
+              <input type="hidden" name ="market_name" value="{{ item.market_name }}">
+              <input type="hidden" name ="icon_url" value="{{ item.icon_url }}">
+              <input type="hidden" name ="inspect_link" value="{{ item.inspect_link }}">
+
+>>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
               <input type="number" name="price" step="0.01" min="0" max="99999999.99" required>
               <button type="submit">List</button>
             </form>
           {% endif %}
 
         </td>
+<<<<<<< HEAD
         {% if loop.index % 6 == 0 %}
+=======
+        {% if loop.index % 5 == 0 %}
+>>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
     </tr><tr>
         {% endif %}
       {% endfor %}

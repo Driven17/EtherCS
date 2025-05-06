@@ -4,7 +4,11 @@ from app_config import Config
 STEAM_API_KEY = Config.STEAM_API_KEY
 
 def fetch_steam_user_info(steamId):
+<<<<<<< HEAD
     
+=======
+      
+>>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
     url = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/"
     parameters = {
         "key": STEAM_API_KEY,
@@ -72,6 +76,7 @@ def parse_inventory(raw_inventory):
 
         if not description:
             continue
+<<<<<<< HEAD
         
         tags = description.get('tags', [])
         quality = next((tag['localized_tag_name'] for tag in tags if tag.get('category') == 'Rarity'), None)
@@ -97,9 +102,38 @@ def parse_inventory(raw_inventory):
             'tradable': description.get('tradable'),
             'inspect_link': description.get("actions", [])[0].get("link") if description.get("actions") else None,
             'icon_url': f"https://community.cloudflare.steamstatic.com/economy/image/{description.get('icon_url')}",
+=======
+
+        inventory.append({
+            'name': description.get('name'),
+            'market_name': description.get('market_hash_name'),
+            'tradable': description.get('tradable'),
+            'inspect_link': description.get("actions", [])[0].get("link") if description.get("actions") else None,
+            'icon_url': f"https://community.cloudflare.steamstatic.com/economy/image/{description.get('icon_url')}",
+            
+>>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
             'assetid': asset['assetid'],
             'classid': asset['classid'],
             'instanceid': asset['instanceid'],
         })
+<<<<<<< HEAD
 
     return inventory
+=======
+    return inventory
+
+### EXTRA // MISC ###
+def bymykel_json_fetch():
+    url = f"https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json"
+    
+    try:
+        all_assets = requests.get(url, timeout=30)
+        all_assets.raise_for_status()
+        print("All assets successfully fetched! ByMykel's JSON.")
+        return all_assets.json()
+
+    except requests.exceptions.RequestException as e:
+        print(f"Request failed: {e}")
+    
+    return None
+>>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)

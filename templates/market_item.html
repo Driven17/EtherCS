@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}EtherCS - Listings for {{ asset.name }} {% endblock %}
+
+{% block content %}
+    <h2>{{ asset.name }}</h2>
+    <img src="{{ asset.icon_url }}" alt="{{ asset.name }}" width = 128>
+    <br><hr><br>
+    <ul>
+    {% for listing in listings %}
+        <li>
+        <img src="{{ listing.icon_url }}" width="64">
+        Price: ${{ listing.price }} <br>
+
+        {% if listing.inspect_link %}
+        <a href="{{ listing.inspect_link }}">Inspect</a>
+        {% endif %}
+        
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

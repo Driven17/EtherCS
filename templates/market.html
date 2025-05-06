@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}EtherCS | CS2 Marketplace{% endblock %}
+
+{% block content %}
+    {% if assets %}
+        <table>
+            <tr>
+                {% for asset in assets %}
+                    <td class="market-item">
+                        <img src="{{ asset.icon }}" width="128">
+                        <a href="/market/item/{{ asset.id }}">{{ asset.market_name }}</a>
+                        <p>{{ asset.total_listings }} Listings</p>
+                        <p>Starting at ${{ asset.min_price }}</p>
+                    </td>                
+                    {% if loop.index % 5 == 0 %}
+            </tr><tr>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        </table>
+    {% else %}
+    <p>No active listings.</p>
+    {% endif %}
+{% endblock %}
