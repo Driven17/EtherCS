@@ -3,21 +3,11 @@
 {% block title %}EtherCS | Inventory{% endblock %}
 
 {% block content %}
-{% if user and inventory %}
+{% if inventory %}
   <table>
     <tr>
       {% for item in inventory %}
         <td>
-<<<<<<< HEAD
-          <img src="{{ item.icon_url }}" alt="{{ item.name }}" width="120" height="90">
-          <p>{{ item.market_hash_name }}</p>
-          
-          {% if item.tradable == 1 %}
-            <form action="{{ url_for('list_item') }}" method="post">
-              <input type="hidden" name="asset_id" value="{{ item.assetid }}">
-              <input type="hidden" name="market_name" value="{{ item.market_hash_name }}">
-              <input type="hidden" name ="icon_url" value="{{ item.icon_url }}">
-=======
           <img src="{{ item.icon_url }}" alt="{{ item.market_name }}" width="120" height="90">
           <p>{{ item.market_name }}</p>
           
@@ -32,22 +22,19 @@
               <input type="hidden" name ="icon_url" value="{{ item.icon_url }}">
               <input type="hidden" name ="inspect_link" value="{{ item.inspect_link }}">
 
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
               <input type="number" name="price" step="0.01" min="0" max="99999999.99" required>
               <button type="submit">List</button>
             </form>
           {% endif %}
 
         </td>
-<<<<<<< HEAD
-        {% if loop.index % 6 == 0 %}
-=======
         {% if loop.index % 5 == 0 %}
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
     </tr><tr>
         {% endif %}
       {% endfor %}
     </tr>
   </table>
+{% else %}
+<p>No items. If inventory is private, you can change it <a href="{{ user.profile_url }}edit/settings/" target="_blank">here</a>.</p>
 {% endif %}
 {% endblock %}

@@ -19,12 +19,8 @@ migrations/__pycache__/
 pastfunctions/
 
 # TEMP
-<<<<<<< HEAD
-static/terminal.js
-=======
 static/terminal.js
 
 reference
 
 app_misc.py
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)

@@ -8,21 +8,17 @@
     {% for listing in listings %}
         <img src="{{ listing.icon_url }}" alt="{{ listing.market_name }}" width="120" height="90">
         
-<<<<<<< HEAD
-        {{ listing.market_name }}  |  ${{ listing.price }}
-=======
         <p>{{ listing.market_name }}  |  ${{ listing.price }}</p>
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
 
         <form action="{{ url_for('mylistings_edit') }}" method="post">
-            <input type="hidden" name="listing_id" value="{{ listing.listing_id }}">
+            <input type="hidden" name="listing_id" value="{{ listing.id }}">
             <input type="hidden" name="seller_id" value="{{ listing.seller_id }}">
             <input type="number" name="new_price" step="0.01" min="0" max="99999999.99" required>
             <button type="submit">Edit Price</button>
         </form>
 
         <form action="{{ url_for('mylistings_delete') }}" method="post">
-            <input type="hidden" name="listing_id" value="{{ listing.listing_id }}">
+            <input type="hidden" name="listing_id" value="{{ listing.id }}">
             <input type="hidden" name="seller_id" value="{{ listing.seller_id }}">
             <button type="submit">Delete Listing</button>
         </form>

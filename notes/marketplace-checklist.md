@@ -42,12 +42,4 @@ This checklist ensures all core functionality is in place before starting Phase 
 
 ---
 
-## Version Control
-
-- [ ] Commit message: `Finish Phase 4 - Marketplace complete`
-- [ ] Tag this commit (e.g. `phase4-done` or `v0.4`)
-- [ ] Optional: push to remote or back up locally
-
----
-
 > Next: Begin Phase 5 – Code abstraction, cleanup, and consistent naming.

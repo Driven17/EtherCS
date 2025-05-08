@@ -1,125 +1,48 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func, Enum
-from sqlalchemy.dialects.mysql import BIGINT
+from models import db, User, Asset, Listing
+from sqlalchemy import func
 import datetime
-
-db = SQLAlchemy()
-
-class User(db.Model):
-    __tablename__ = "users"
-    
-    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    steam_id = db.Column(BIGINT(unsigned=True), unique=True, nullable=False)
-
-    display_name = db.Column(db.String(32), nullable=False)
-    avatar = db.Column(db.Text, nullable=False)
-    profile_url = db.Column(db.Text, nullable=False)
-
-    trade_url = db.Column(db.Text, nullable=True)
-    steam_api_key = db.Column(db.Text, nullable=True)
-<<<<<<< HEAD
-    profile_url = db.Column(db.Text, nullable=False)
-=======
-
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
-    created_at = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=False)
-    last_login = db.Column(db.DateTime, default=datetime.datetime.now(), onupdate=datetime.datetime.now(), nullable=False)
-
-class Listing(db.Model):
-    __tablename__ = "listings"
-<<<<<<< HEAD
-=======
-
-    listing_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    seller_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-    market_id = db.Column(db.Integer, db.ForeignKey('assets.id'), nullable=False)
-
-    assetid = db.Column(BIGINT(unsigned=True), nullable=False)
-    classid = db.Column(BIGINT(unsigned=True), nullable=False)
-    instanceid = db.Column(BIGINT(unsigned=True), nullable=False)
-
-    price = db.Column(db.Numeric(10, 2), nullable=False)
-    icon_url = db.Column(db.Text, nullable=False)
-    inspect_link = db.Column(db.Text, nullable=True)
-    listing_date = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=False)
-
-    asset = db.relationship('Asset', backref='listings')
-
-class Asset(db.Model):
-    __tablename__ = "assets"
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(255), unique=True, index=True, nullable=False)
-    type = db.Column(
-        Enum('Skin', 'Case', 'Sticker', 'Agent',
-            'Music Kit', 'Tool', 'Patch', 'Graffiti', 'Pass', 'Collectible',
-            'Charm', 'Gift', 'Key', name='type'), nullable=False)
-    category = db.Column(
-        Enum('Normal', 'Souvenir', 'StatTrak', 
-             'Star','StarStatTrak', name='category'),
-               default='Normal', nullable=False)
-    quality = db.Column(db.String(32), nullable=True)
-    color = db.Column(db.String(8), nullable = True)
-    weapon_type = db.Column(db.String(64), nullable=True)
-    skin = db.Column(db.String(64), nullable=True)
-    exterior = db.Column(
-        Enum('Factory New', 'Minimal Wear', 'Field-Tested', 
-             'Well-Worn','Battle-Scarred', 'Not Painted', name='exterior'), nullable=True)
-    collection = db.Column(db.String(128), nullable=True)
-    team = db.Column(
-        Enum('Counter-Terrorist', 'Terrorist', 
-             'Both Teams', name='team'), default=None, nullable=True)
-    
-    min_float = db.Column(db.Numeric(3,2), nullable=True)
-    max_float = db.Column(db.Numeric(3,2), nullable=True)
-
-    sticker_capsule = db.Column(db.String(128), nullable=True)
-    sticker_effect = db.Column(db.String(16), nullable=True, default=None)
-    sticker_type = db.Column(db.String(64), nullable=True)
-    sticker_event = db.Column(db.String(64), nullable=True)
-    sticker_team = db.Column(db.String(64), nullable=True)
-    sticker_player = db.Column(db.String(64), nullable=True)
-
-    icon_url = db.Column(db.String(512), nullable=False)
-
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
-
-    listing_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    seller_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
-    market_name = db.Column(db.Text, nullable=False)
-    asset_id = db.Column(BIGINT(unsigned=True), nullable=False)
-    price = db.Column(db.Numeric(10, 2), nullable=False)
-    icon_url = db.Column(db.Text, nullable=False)
-    listing_date = db.Column(db.DateTime, default=datetime.datetime.now(), nullable=False)
 
 ### ALL FUNCTIONS // QUERIES ###
 
-<<<<<<< HEAD
-=======
 # USER RELATED
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
-def user_exists(steamId):
-    # Checks if user exists in DB by steam id
-    user = User.query.filter_by(steam_id=steamId).first()
-    if user:
-        return True
-    
-def get_user_info(steamId):
-    return User.query.filter_by(steam_id=steamId).first()
-    
-def update_last_login(userId):
-    db.session.query(User).filter_by(user_id=userId).update({})
-    db.session.commit()
+def is_user(steam_id):
+    user = (User
+            .query
+            .filter_by(steam_id=steam_id)
+            .first())
+    return bool(user)
 
-def store_new_user(steamData):
+def get_user_by_steam_id(steam_id):
+    return (User
+            .query
+            .filter_by(steam_id=steam_id)
+            .first())
+
+def get_user_by_user_id(user_id):
+    return (User
+            .query
+            .filter_by(id=user_id)
+            .first())
+    
+def update_last_login(user_id):
+    # Triggers SQLAlchemy's `onupdate` for `last_login` without modifying any actual field.
+    # This relies on `onupdate=datetime.datetime.now()` in the model definition.
+    (db.session
+     .query(User)
+     .filter_by(id=user_id)
+     .update({}))
+    db.session.commit()
+    print(f"User ({user_id}) logged in at {datetime.datetime.now()}")
+
+def create_user(steam_data):
     # Validates steam data and stores it in DB 
-    if steamData:
-        steamData = steamData["response"]["players"][0]
+    if steam_data:
+        steam_data = steam_data["response"]["players"][0]
         new_user = User(
-            steam_id = steamData["steamid"],
-            display_name = steamData["personaname"],
-            avatar = steamData["avatar"],
-            profile_url = steamData["profileurl"]
+            steam_id = steam_data["steamid"],
+            display_name = steam_data["personaname"],
+            avatar = steam_data["avatar"],
+            profile_url = steam_data["profileurl"]
         )
         db.session.add(new_user)
         db.session.commit()
@@ -128,122 +51,101 @@ def store_new_user(steamData):
     return None
 
 # LISTING RELATED
-<<<<<<< HEAD
-def create_listing(listingData):
+def create_listing(seller_id, asset_id, assetid, classid, instanceid, price, icon_url, inspect_link):
     # Use existing function to check if item is already listed.
-    if listing_exists(listingData.asset_id, listingData.seller_id):
+    if is_listing(assetid, seller_id):
         print("Item is already listed.")
-        return None
-    
-    if listingData:
-        new_listing = Listing(
-            seller_id = listingData.seller_id,
-            market_name = listingData.market_name,
-            asset_id = listingData.asset_id,
-            price = listingData.price,
-            icon_url = listingData.icon_url
-        )
-        db.session.add(new_listing)
-        db.session.commit()
-        print("New listing successfully saved.")
-        return True
-=======
-def create_listing(sellerId, marketId, assetid, classid, instanceid, price, iconUrl, inspectLink):
-    # Use existing function to check if item is already listed.
-    if listing_exists(assetid, sellerId):
-        print("Item is already listed.")
-        return None
+        return False
     
     new_listing = Listing(
-        seller_id = sellerId,
-        market_id = marketId,
+        seller_id = seller_id,
+        asset_id = asset_id,
         assetid = assetid,
         classid = classid,
         instanceid = instanceid,
         price = price,
-        icon_url = iconUrl,
-        inspect_link = inspectLink
+        icon_url = icon_url,
+        inspect_link = inspect_link
     )
     db.session.add(new_listing)
     db.session.commit()
     print("New listing successfully saved.")
     return True
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
 
-def delete_listing(listingId):
-    if listingId:
-        currentListing = Listing.query.filter_by(listing_id=listingId).first()
-        db.session.delete(currentListing)
+def delete_listing(listing_id):
+    listing = (Listing
+                    .query
+                    .filter_by(id=listing_id).first())
+    if listing:
+        db.session.delete(listing)
         db.session.commit()
-        print(F"Listing {listingId} successfully deleted.")
+        print(F"Listing {listing_id} successfully deleted.")
         return True
-    return None
+    return False
     
-def edit_price(listingId, newPrice):
-    listing = Listing.query.filter_by(listing_id=listingId).first()
+def update_price(listing_id, new_price):
+    listing = (Listing
+               .query
+               .filter_by(id=listing_id)
+               .first())
     if listing:
         old_price = listing.price
-        listing.price = float(newPrice)
+        listing.price = float(new_price)
         db.session.commit()
-        print(f"Listing ID: {listingId} - Price successfully changed from ${old_price} to ${newPrice}")
+        print(f"Listing ID: {listing_id} - Price successfully changed from ${old_price} to ${new_price}")
         return True
     return None
     
-def listing_exists(assetId, sellerId):
-<<<<<<< HEAD
-    listing = Listing.query.filter_by(asset_id=assetId, seller_id=sellerId).first()
-=======
-    listing = Listing.query.filter_by(assetid=assetId, seller_id=sellerId).first()
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
-    if listing:
-        return listing
-    return None
+def is_listing(assetid, seller_id):
+    listing = (Listing
+               .query
+               .filter_by(assetid=assetid, seller_id=seller_id)
+               .first())
+    return bool(listing)
 
-def user_listings(sellerId):
-<<<<<<< HEAD
-    listings = Listing.query.filter_by(seller_id=sellerId).all()
-    if listings:
-        return listings
-    return None
-=======
-    if not sellerId:
+def build_listings_by_seller(seller_id):
+    if not seller_id:
         return None
     
-    listings = Listing.query.filter_by(seller_id=sellerId).all()
+    listings = (Listing
+                .query
+                .filter_by(seller_id=seller_id)
+                .all())
+    
     if listings:
         return [
             {
-                'listing_id': l.listing_id,
-                'seller_id': l.seller_id,
-                'price': l.price,
-                'icon_url': l.icon_url,
-                'inspect_link': l.inspect_link,
-                'market_name': l.asset.name,
-                'weapon_type': l.asset.weapon_type,
-                'exterior': l.asset.exterior
+                'id': listing.id,
+                'seller_id': listing.seller_id,
+                'price': listing.price,
+                'icon_url': listing.icon_url,
+                'inspect_link': listing.inspect_link,
+                'market_name': listing.asset.name,
+                'weapon_type': listing.asset.weapon_type,
+                'exterior': listing.asset.exterior
             }
-            for l in listings
+            for listing in listings
         ]
     return None
 
 # MARKET RELATED
-def marketplace_data():
+def build_marketplace_data():
     assets = (
         db.session.query(
-            Listing.market_id,
+            Listing.asset_id,
             Asset.name,
             Asset.icon_url.label('icon'),
-            func.count(Listing.listing_id).label('total_listings'),
+            func.count(Listing.id).label('total_listings'),
             func.min(Listing.price).label('min_price')
         )
-        .join(Asset, Listing.market_id == Asset.id)
-        .group_by(Listing.market_id, Asset.name, Asset.icon_url)
+        .join(Asset, Listing.asset_id == Asset.id)
+        .group_by(Listing.asset_id, Asset.name, Asset.icon_url)
         .order_by(func.min(Listing.price).asc())
         .all()
     )
     return [
         {
-            'id': asset.market_id,
+            'id': asset.asset_id,
             'market_name': asset.name,
             'icon': asset.icon,
             'total_listings': asset.total_listings,
@@ -252,31 +154,36 @@ def marketplace_data():
         for asset in assets
     ]
 
-def get_listings(assetId):
+def get_listings_by_asset(asset_id):
     return (
         Listing.query
-        .filter_by(market_id=assetId)
+        .filter_by(asset_id=asset_id)
         .order_by(Listing.price.asc())
         .all()
     )
 
-def get_asset_data_byname(marketName):
-    asset = Asset.query.filter_by(name=marketName).first()
-    if asset:
-        return asset
-    return None
+def get_asset_data_by_name(market_name):
+    asset = (Asset
+             .query
+             .filter_by(name=market_name)
+             .first())
+    return asset
 
-def get_asset_data_byid(assetId):
-    asset = Asset.query.filter_by(id=assetId).first()
-    if asset:
-        return asset
-    return None
+def get_asset_data_by_id(asset_id):
+    asset = (Asset
+             .query
+             .filter_by(id=asset_id)
+             .first())
+    return asset
 
 # SCRIPTS // MISC
-def bymykel_json_db(name, type, category, quality, color,
-                    weaponType, skin, exterior, collection, 
-                    team, minFloat, maxFloat, stickerCapsule, stickerEffect, stickerEvent,
-                    stickerType, stickerTeam, stickerPlayer, iconUrl, assetNo, totalLength):
+def bymykel_json_db(
+    name, type, category, quality, color,
+    weaponType, skin, exterior, collection, 
+    team, min_float, max_float, sticker_capsule,
+    sticker_effect, sticker_event, stickerType,
+    sticker_team, sticker_player, icon_url, asset_number, total_length):
+
     """This is a script to store everything into the static table 'assets' in the database."""
     new_asset = Asset(
         name = name,
@@ -289,23 +196,25 @@ def bymykel_json_db(name, type, category, quality, color,
         exterior = exterior,
         collection = collection,
         team = team,
-        min_float = minFloat,
-        max_float = maxFloat,
-        sticker_capsule = stickerCapsule,
-        sticker_effect = stickerEffect,
+        min_float = min_float,
+        max_float = max_float,
+        sticker_capsule = sticker_capsule,
+        sticker_effect = sticker_effect,
         sticker_type = stickerType,
-        sticker_event = stickerEvent,
-        sticker_team = stickerTeam,
-        sticker_player = stickerPlayer,
-        icon_url = iconUrl
+        sticker_event = sticker_event,
+        sticker_team = sticker_team,
+        sticker_player = sticker_player,
+        icon_url = icon_url
     )
     db.session.add(new_asset)
     db.session.commit()
-    print(f"Success {int(assetNo/totalLength*100)}%")
+    print(f"Success {int(asset_number/total_length*100)}%")
 
 def bymykel_asset_exists(name):
-    asset_name = Asset.query.filter_by(name=name).first()
+    asset_name = (Asset
+                  .query
+                  .filter_by(name=name)
+                  .first())
     if asset_name:
         return True
     return False
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)

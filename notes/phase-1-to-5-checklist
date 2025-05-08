@@ -1,0 +1,42 @@
+
+**Phase 1: Steam OpenID Login**
+- [X] Steam login redirects and returns successfully
+- [X] SteamID64 is captured
+- [X] Session/cookie persists login
+- [X] User is stored or updated in `users` table
+
+**Phase 2: Steam Info Stored in DB**
+- [X] Steam username, avatar, and other info fetched using SteamID64
+- [X] User info is saved correctly in the database
+- [X] Handles re-login without duplicate entries
+
+**Phase 3: Inventory Listing + User Pages**
+- [X] Inventory page loads correctly with user's tradable CS2 skins
+- [X] Each item is clickable/selectable
+- [X] User can set a price and list an item
+- [X] Item gets stored in `listings` table
+- [X] My Listings page shows current listings
+- [X] User can:
+  - [X] Edit listing price
+  - [X] Remove listings
+- [X] All database actions reflect instantly (no cache issues)
+
+**Phase 4: Public Marketplace**
+- [X] Marketplace page loads without login
+- [X] Shows only skins with listings
+- [X] Each skin displays:
+  - [X] Total number of listings
+  - [X] Lowest listed price
+- [X] Clicking a skin shows its full list of listings (price ascending)
+
+**Phase 5: Code Cleanup & Abstraction**
+- [X] No unused files or imports remain
+- [X] Descriptive variable and function names
+- [X] Manual dictionary mappings work cleanly
+- [X] Item/skin lookup is accurate and consistent
+- [X] Minimal and clean project structure maintained
+
+**Extra (if applicable)**
+- [X] Dev nav page links to all pages correctly
+- [Phase 6+] Steam API key and trade URL (settings) work or are stubbed
+- [N/A] All user flows are functional without errors in logs

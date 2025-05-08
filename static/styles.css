@@ -78,8 +78,6 @@ nav a:hover {
 
 .nav-left a:hover {
     text-decoration: underline;
-<<<<<<< HEAD
-=======
 }
 a {
     text-decoration: none; 
@@ -94,5 +92,4 @@ a {
 .market-item p {
     display: block;
     margin: 5px auto;
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
 }

@@ -3,16 +3,12 @@ from app_config import Config
 
 STEAM_API_KEY = Config.STEAM_API_KEY
 
-def fetch_steam_user_info(steamId):
-<<<<<<< HEAD
-    
-=======
+def fetch_steam_info(steam_id):
       
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
     url = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v2/"
     parameters = {
         "key": STEAM_API_KEY,
-        "steamids": steamId
+        "steamids": steam_id
     }
 
     max_attempts = 3
@@ -32,9 +28,9 @@ def fetch_steam_user_info(steamId):
 
     return None
 
-def fetch_cs_inventory(steamId):
+def fetch_inventory(steam_id):
 
-    url = f"https://steamcommunity.com/inventory/{steamId}/730/2"
+    url = f"https://steamcommunity.com/inventory/{steam_id}/730/2"
 
     max_attempts = 3
     attempts = 0
@@ -62,47 +58,19 @@ def parse_inventory(raw_inventory):
 
     if not assets:
         return None
-    
+        
     desc_lookup = {
         (desc['classid'], desc['instanceid']): desc
         for desc in descriptions
     }
 
     inventory = []
-
     for asset in assets:
         key = (asset['classid'], asset['instanceid'])
         description = desc_lookup.get(key)
 
         if not description:
             continue
-<<<<<<< HEAD
-        
-        tags = description.get('tags', [])
-        quality = next((tag['localized_tag_name'] for tag in tags if tag.get('category') == 'Rarity'), None)
-        exterior = next((tag['localized_tag_name'] for tag in tags if tag.get('category') == 'Exterior'), None)
-        type = next((tag['localized_tag_name'] for tag in tags if tag.get('category') == 'Type'), None)
-        
-        count = 0
-        for tag in tags:
-            if tag.get('category') == 'Quality':
-                count += 1
-        if count > 2:
-            category = '★ StatTrak™'
-        else:
-            category = next((tag['localized_tag_name'] for tag in tags if tag.get('category') == 'Quality'), None)
-
-        inventory.append({
-            'name': description.get('name'),
-            'market_hash_name': description.get('market_hash_name'),
-            'type': type,
-            'exterior': exterior,
-            'quality': quality,
-            'category': category,
-            'tradable': description.get('tradable'),
-            'inspect_link': description.get("actions", [])[0].get("link") if description.get("actions") else None,
-            'icon_url': f"https://community.cloudflare.steamstatic.com/economy/image/{description.get('icon_url')}",
-=======
 
         inventory.append({
             'name': description.get('name'),
@@ -111,15 +79,10 @@ def parse_inventory(raw_inventory):
             'inspect_link': description.get("actions", [])[0].get("link") if description.get("actions") else None,
             'icon_url': f"https://community.cloudflare.steamstatic.com/economy/image/{description.get('icon_url')}",
             
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)
             'assetid': asset['assetid'],
             'classid': asset['classid'],
             'instanceid': asset['instanceid'],
         })
-<<<<<<< HEAD
-
-    return inventory
-=======
     return inventory
 
 ### EXTRA // MISC ###
@@ -127,13 +90,12 @@ def bymykel_json_fetch():
     url = f"https://raw.githubusercontent.com/ByMykel/CSGO-API/main/public/api/en/all.json"
     
     try:
-        all_assets = requests.get(url, timeout=30)
-        all_assets.raise_for_status()
+        assets = requests.get(url, timeout=30)
+        assets.raise_for_status()
         print("All assets successfully fetched! ByMykel's JSON.")
-        return all_assets.json()
+        return assets.json()
 
     except requests.exceptions.RequestException as e:
         print(f"Request failed: {e}")
     
     return None
->>>>>>> b7a7baa (feat: add public marketplace with live listings, item count, and price sorting)

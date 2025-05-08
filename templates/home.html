@@ -4,6 +4,6 @@
 
 {% block content %}
     {% if user %}
-        <p>Hello, {{ user.display_name }} | SteamID: {{ user.steam_id }} | EtherCS UserID: {{user.user_id}} | <a target="_blank" href="{{ user.profile_url }}">Steam Profile</a></p>
+        <p>Hello, {{ user.display_name }} | SteamID: {{ user.steam_id }} | EtherCS UserID: {{user.id}} | <a target="_blank" href="{{ user.profile_url }}">Steam Profile</a></p>
     {% endif %}
 {% endblock %}
