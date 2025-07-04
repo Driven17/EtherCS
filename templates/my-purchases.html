@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}EtherCS | My Purchases{% endblock %}
+
+{% block content %}
+    {% if purchases %}
+    {% for purchase in purchases %}
+        <img src="{{ purchase.icon_url }}" alt="{{ purchase.market_name }}" width="120" height="90">
+
+        <p>{{ purchase.market_name }}  |  ${{ purchase.amount }}</p>
+        <p>Seller: {{ purchase.seller_name }}</p>
+        <p>Status: {{ purchase.status }}</p>
+
+        {% if purchase.status == "TradeSent" %}
+            <p>Offer has been sent, please accept the offer.</p>
+            <a href="https://steamcommunity.com/tradeoffer/{{ purchase.trade_offer_id }}/" target="_blank">
+                <button>Trade Offer</button>
+            </a>
+        {% endif %}
+
+    {% endfor %}
+    {% else %}
+    <p>You haven't purchased anything, go to <a href="/market">market</a>.</p>
+    {% endif %}
+{% endblock %}

@@ -6,6 +6,7 @@
     <h2>{{ asset.name }}</h2>
     <img src="{{ asset.icon_url }}" alt="{{ asset.name }}" width = 128>
     <br><hr><br>
+    {% if listings %}
     <ul>
     {% for listing in listings %}
         <li>
@@ -15,8 +16,17 @@
         {% if listing.inspect_link %}
         <a href="{{ listing.inspect_link }}">Inspect</a>
         {% endif %}
+
+        <button class="buy-button" data-listing-id="{{ listing.id }}">Buy</button>
         
         </li>
     {% endfor %}
     </ul>
+    {% else %}
+    <p>No listings for this item, go to <a href="/market">market</a>.</p>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/market-item.js') }}"></script>
 {% endblock %}

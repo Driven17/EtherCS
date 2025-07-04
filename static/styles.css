@@ -93,3 +93,8 @@ a {
     display: block;
     margin: 5px auto;
 }
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}

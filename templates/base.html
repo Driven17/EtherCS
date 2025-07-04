@@ -5,34 +5,39 @@
     <title>{% block title %}EtherCS{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
-
 </head>
 <body>
 
-    <nav>
-        <div class="nav-left">
-            <a href="{{ url_for('home') }}">Home</a>
-            <a href="{{ url_for('market') }}">Marketplace</a>
-            <a href="{{ url_for('inventory') }} ">Inventory</a>
-            <a href="{{ url_for('mylistings') }}">My Listings</a>
-        </div>
+<nav>
+    <div class="nav-left">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('market') }}">Marketplace</a>
+    </div>
 
-        <div class="user-dropdown">
-            {% if user %}
+    <div class="nav-right">
+        {% if user %}
+            <a href="{{ url_for('inventory') }}">Inventory</a>
+            <a href="{{ url_for('my_listings') }}">My Listings</a>
+            <a href="{{ url_for('my_sales') }}">My Sales</a>
+            <a href="{{ url_for('my_purchases') }}">My Purchases</a>
+            <div class="user-dropdown">
                 <img src="{{ user.avatar }}" alt="Avatar" class="avatar">
                 <div class="dropdown-content">
-                <a href="">Settings</a>
-                <a href="{{ url_for('logout') }}">Logout</a>
-            {% else %}
-                <a href="{{ url_for('login') }}">Login/Signup</a>
-            {% endif %}
+                    <a href="{{ url_for('settings') }}">Settings</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
                 </div>
-        </div>
-    </nav>
-    
-    <div class="content">
-        {% block content %}{% endblock %}
+            </div>
+        {% else %}
+            <a href="{{ url_for('login') }}">Login/Signup</a>
+        {% endif %}
     </div>
-    
+</nav>
+
+<div class="content">
+    {% block content %}{% endblock %}
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

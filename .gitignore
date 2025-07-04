@@ -2,6 +2,7 @@
 venv/
 
 # Ignore environment variables
+*.env*
 .env
 
 # Ignore Python cache
@@ -12,15 +13,42 @@ __pycache__/
 
 # Ignore Alembic migration cache
 migrations/__pycache__/
+migrations/env.py
+migrations/README
+migrations/script.py.mako
 
-# (Optional) Ignore editor config files
+#Ignore full migrations folder
+migrations/
+
+# Ignore editor config files
 .vscode/
+*.code-workspace
 
+# Ignore reference folders/files
 pastfunctions/
+reference/
 
-# TEMP
-static/terminal.js
-
-reference
-
+# Ignore specific .py files
 app_misc.py
+
+# Ignore log files
+*.log
+*.log.*
+logs/
+
+# Ignore OS-specific/system files
+.DS_Store
+Thumbs.db
+
+# Ignore temporary/lock/swap files
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Ignore notes
+notes/
+
+# Temporarily ignore all web3/blockchain related files
+static/js/abi.json
+app_web3.py

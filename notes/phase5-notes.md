@@ -114,3 +114,24 @@ def create_listing(user_id, item_data):
 * Always distinguish between `asset_id` (internal) and `assetid` (Steam-specific).
 
 ---
+| Context         | Example             | Style               | Notes                       |
+| --------------- | ------------------- | ------------------- | --------------------------- |
+| Variables       | `user_name`         | **snake\_case**     | PEP 8 convention            |
+| Functions       | `save_data()`       | snake\_case         |                             |
+| Constants       | `API_URL`           | UPPER\_SNAKE\_CASE  |                             |
+| Class names     | `class UserAccount` | PascalCase          |                             |
+| Dictionary keys | `'user_name'`       | usually snake\_case | Matches DB or Python naming |
+
+| Context                | Example                      | Style              | Notes                     |
+| ---------------------- | ---------------------------- | ------------------ | ------------------------- |
+| Variables              | `let userName`               | **camelCase**      | JS convention             |
+| Functions              | `function saveData()`        | camelCase          | JS convention             |
+| Constants              | `const API_URL`              | UPPER\_SNAKE\_CASE | For global constants      |
+| Object keys (custom)   | `user.name`                  | camelCase          | JS-style objects          |
+| DOM IDs/Classes Access | `getElementById("userName")` | Matches HTML       | Keep consistent with HTML |
+
+| Context                 | Example         | Style                         | Notes                            |
+| ----------------------- | --------------- | ----------------------------- | -------------------------------- |
+| Standard attributes     | `autocomplete`  | lowercase                     | Always lowercase                 |
+| Custom data attributes  | `data-user-id`  | **kebab-case**                | Used for embedding custom data   |
+| Element IDs and classes | `id="userName"` | often camelCase or kebab-case | Up to you — just stay consistent |

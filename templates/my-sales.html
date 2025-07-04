@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}EtherCS | My Sales{% endblock %}
+
+{% block content %}
+    {% if sales %}
+        {% for sale in sales %}
+            <img src="{{ sale.icon_url }}" alt="{{ sale.market_name }}" width="120" height="90">
+
+            <p>{{ sale.market_name }}  |  ${{ sale.amount }}</p>
+            <p>Buyer: {{ sale.buyer_name }}</p>
+            <p>Status: {{ sale.status }}</p>
+            {% if sale.status == "PendingAcceptance" %}
+                <button class="accept-trade-btn" data-id="{{ sale.transaction_id }}">Accept Offer</button>
+            {% elif sale.status == "AwaitingSellerAction" %}
+                <button class="send-trade-btn" data-id="{{ sale.transaction_id }}">Send Trade</button>
+            {% elif sale.status == "TradeSent" %}
+                <p>Waiting for buyer to accept offer.</p>
+            {% elif sale.status == "Complete" %}
+                <p>Trade completed and verified.</p>
+            {% elif sale.status == "Failed" %}
+                <p>Trade failed.</p>
+            {% endif %}
+
+        {% endfor %}
+    {% else %}
+        <p>You haven't sold anything, go to <a href="/inventory">inventory</a>.</p>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/my-sales.js') }}"></script>
+{% endblock %}
