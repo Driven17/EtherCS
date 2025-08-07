@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, session, request, jsonify, render_template
 from flask_migrate import Migrate
 
-from app_fetch import fetch_steam_info, fetch_inventory, fetch_pol_usd
+from app_fetch import fetch_steam_info, fetch_inventory
 from app_config import Config
 from app_encryption import encrypt, decrypt
 from app_steam import parse_and_sort_inventory
@@ -10,8 +10,7 @@ from app_db import (
     is_user, update_last_login, create_user, get_user_by_user_id, get_user_by_steam_id, 
     insert_listing, build_listings_by_seller, update_listing_price, delete_listing,
     get_asset_data_by_name, get_asset_data_by_id, get_listings_by_asset, build_marketplace_data,
-    update_user_settings, get_listing_by_id, edit_listing_status, create_notification,
-    get_notifications, update_notification_as_read, create_transaction, edit_transaction_status,
+    update_user_settings, get_listing_by_id, edit_listing_status, create_transaction, edit_transaction_status,
     get_sales_by_user_id, get_purchases_by_user_id, get_buyer_and_seller, build_trade_payload,
     insert_trade_offer_id, get_pending_trades_by_user, get_transaction_id_by_offer_id,
     get_listing_id_by_transaction_id, is_listing
@@ -78,17 +77,16 @@ def home():
 def inventory():
     user = get_user_by_user_id(session.get('user_id'))
     steam_id = session.get('steam_id')
-    #inventory = fetch_inventory('76561198045277210') #OHNE PIXEL INVENTORY ||| FOR TESTING |||
     inventory = parse_and_sort_inventory(fetch_inventory(steam_id))
-    
     return render_template('inventory.html', steam_id=steam_id, inventory=inventory, user=user)
 
 @app.route("/inventory/list", methods=['POST'])
 @login_required
 def list_item():
-    # VALIDATION START
-    """Make sure that the user has that item with the same assetid in his inventory"""
-    # VALIDATION END
+
+    # VALIDATION REQUIRED HERE
+    # VALIDATION REQUIRED HERE
+    # VALIDATION REQUIRED HERE
 
     seller_id = session.get("user_id") # get user id (seller_id) on platform
     assetid = int(request.form['assetid'])
@@ -105,7 +103,6 @@ def list_item():
     
     price = float(request.form['price'])
 
-    ### LISTING ###
     asset_data = get_asset_data_by_name(market_name)
     if not asset_data:
         return "Invalid item"
@@ -415,12 +412,12 @@ def process_matching_offers():
 
         transaction_id = get_transaction_id_by_offer_id(offer_id)
         if not transaction_id:
-            logging.warning("No transaction found for offer_id %s", offer_id)
+            logging.error("No transaction found for offer_id %s", offer_id)
             continue
 
         listing_id = get_listing_id_by_transaction_id(transaction_id)
         if not listing_id:
-            logging.warning("No listing found for transaction_id %s", transaction_id)
+            logging.error("No listing found for transaction_id %s", transaction_id)
             continue
 
         if status == "Failed":
