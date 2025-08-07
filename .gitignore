@@ -48,7 +48,3 @@ Thumbs.db
 
 # Ignore notes
 notes/
-
-# Temporarily ignore all web3/blockchain related files
-static/js/abi.json
-app_web3.py
