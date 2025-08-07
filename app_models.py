@@ -50,7 +50,7 @@ class Asset(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(255), unique=True, index=True, nullable=False)
     type = db.Column(Enum
-        ('Skin', 'Case', 'Sticker', 'Agent', 'Music Kit', 'Tool', 'Patch', 'Graffiti', 'Pass', 'Collectible', 'Charm', 'Gift', 'Key', name='type'),
+        ('Skin', 'Case', 'Sticker', 'Agent', 'Music Kit', 'Tool', 'Patch', 'Graffiti', 'Pass', 'Collectible', 'Charm', 'Gift', 'Key', 'Highlight', name='type'),
         nullable=False)
     category = db.Column(Enum
         ('Normal', 'Souvenir', 'StatTrak', 'Star','StarStatTrak', name='category'),
